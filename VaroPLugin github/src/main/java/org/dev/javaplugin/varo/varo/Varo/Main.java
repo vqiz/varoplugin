@@ -1,5 +1,9 @@
 package org.dev.javaplugin.varo.varo.Varo;
 
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.sharding.DefaultShardManager;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dev.javaplugin.varo.varo.Varo.mysql.DatabaseManager;
@@ -10,9 +14,10 @@ public final class Main extends JavaPlugin {
     public static DatabaseManager db;
     public static FileConfiguration configuration = null;
     public static Main instance;
-    Table user = new Table("MCNAME TEXT, DCID TEXT, ISALIVE TEXT");
-    Table teams = new Table("NAME TEXT, MCUSER1 TEXT, MCUSER2 TEXT");
-    Table strikes = new Table("MCNAME TEXT, STRIKES TEXT,LASTSEEN TEXT");
+    public static Table user = new Table("MCNAME TEXT, DCID TEXT, ISALIVE TEXT");
+    public static Table teams = new Table("NAME TEXT, MCUSER1 TEXT, MCUSER2 TEXT");
+    public static Table strikes = new Table("MCNAME TEXT, STRIKES TEXT,LASTSEEN TEXT");
+    public static ShardManager bot;
     @Override
     public void onEnable() {
         instance = this;
@@ -23,10 +28,15 @@ public final class Main extends JavaPlugin {
             configuration.set("mysql.user", "null");
             configuration.set("mysql.database", "null");
             configuration.set("mysql.password", "null");
+            configuration.set("bottoken", "null");
+            configuration.set("Guildid", "null");
+            configuration.set("serverip", "null");
         }
         this.saveConfig();
         db = new DatabaseManager(configuration.getString("mysql.host"), configuration.getString("mysql.port"), configuration.getString("mysql.user"), configuration.getString("mysql.database"), configuration.getString("mysql.password"));
-
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(configuration.getString("bottoken"));
+        builder.setActivity(Activity.listening("VARO"));
+        bot = builder.build();
 
     }
 
