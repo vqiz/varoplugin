@@ -1,0 +1,4 @@
+name: Varo
+version: '${project.version}'
+main: org.dev.javaplugin.varo.varo.Varo.Main
+api-version: 1.19
