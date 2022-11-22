@@ -1,6 +1,10 @@
 package org.dev.javaplugin.varo.varo.Varo;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.sharding.DefaultShardManager;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
@@ -9,6 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.dev.javaplugin.varo.varo.Varo.mysql.DatabaseManager;
 import org.dev.javaplugin.varo.varo.Varo.mysql.Table;
 import sun.tools.jconsole.Tab;
+
+
 
 public final class Main extends JavaPlugin {
     public static DatabaseManager db;
@@ -43,5 +49,12 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+    public static void sendPrivateMessage(User user, MessageEmbed embed) {
+
+        user.openPrivateChannel().queue((channel) ->
+        {
+            channel.sendMessageEmbeds(embed).queue();
+        });
     }
 }
